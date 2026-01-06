@@ -1,0 +1,537 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		088CEFD961DEA8D9C1E17BD9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00FA19A20BA736EBFF94E2D9 /* Security.framework */; };
+		0AE2C4A3F2B2AB2D9BDCD49D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1144477161CE0FCA023459E9 /* UIKit.framework */; };
+		1C1B257B06B271EF4EFDC8FC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC307F042F42E77032EBD687 /* CoreGraphics.framework */; };
+		1D507F3012D1A6BBFDE46B1B /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACF485C064BFF0F4A7B2B257 /* Metal.framework */; };
+		2361AC23EBFFEFBA3E45B5AC /* libapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D70C6A7C04985870774094 /* libapp.a */; };
+		291A9E50AC3A239589FDB359 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EAA743362D4AF32DBE2A9EA /* LaunchScreen.storyboard */; };
+		397F5B8B1D2A506F9CF50524 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8F556EA0F3821722D89B509 /* Assets.xcassets */; };
+		53A01FC74B5BD1299BCAB7EC /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 2ED6E124E714F7178F57323E /* assets */; };
+		7F74DF8C0DC6B2418070D328 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83EAB5E704F2E0ED82C385F2 /* MetalKit.framework */; };
+		A6519E54F7B50E2B48200E05 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E750A682E0FCF85E396814 /* WebKit.framework */; };
+		B1A3D8F63B97F74742767920 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65B89E542C34E25ADDC7543C /* QuartzCore.framework */; };
+		F9E7B84189151D30122040E5 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 237B075D6BF07C699CED5D0E /* main.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00FA19A20BA736EBFF94E2D9 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		02BFDC88C8389436FB7A7B1E /* mod.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = mod.rs; sourceTree = "<group>"; };
+		03D70C6A7C04985870774094 /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
+		0C8CA76A10BED70C778DB4CB /* mod.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = mod.rs; sourceTree = "<group>"; };
+		1144477161CE0FCA023459E9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		18E750A682E0FCF85E396814 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		1EC66E6AE065C8F5C3736204 /* mod.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = mod.rs; sourceTree = "<group>"; };
+		237B075D6BF07C699CED5D0E /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		2EAA743362D4AF32DBE2A9EA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2ED6E124E714F7178F57323E /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
+		47AFB2F47E6216FE8F98A6F7 /* mod.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = mod.rs; sourceTree = "<group>"; };
+		569F92683A050F614C02C388 /* bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bindings.h; sourceTree = "<group>"; };
+		65B89E542C34E25ADDC7543C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		83EAB5E704F2E0ED82C385F2 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		8AADE7172958C82F36B0D72F /* mod.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = mod.rs; sourceTree = "<group>"; };
+		905B7182FC38D378CAB7F5F9 /* mod.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = mod.rs; sourceTree = "<group>"; };
+		960A657EF0584A432CCFF7BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A8F556EA0F3821722D89B509 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ACA79D2E76C5FDA7F01CA5BC /* main.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.rs; sourceTree = "<group>"; };
+		ACF485C064BFF0F4A7B2B257 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		BC307F042F42E77032EBD687 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C321D03E04866457447E059A /* lib.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = lib.rs; sourceTree = "<group>"; };
+		F05099E2F5607229283CC3D0 /* reachy-mini-control_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "reachy-mini-control_iOS.entitlements"; sourceTree = "<group>"; };
+		F9801C8B1F30304A8115A443 /* Reachy Mini Control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reachy Mini Control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		06B4E047FEEBD2F2153D5649 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2361AC23EBFFEFBA3E45B5AC /* libapp.a in Frameworks */,
+				1C1B257B06B271EF4EFDC8FC /* CoreGraphics.framework in Frameworks */,
+				1D507F3012D1A6BBFDE46B1B /* Metal.framework in Frameworks */,
+				7F74DF8C0DC6B2418070D328 /* MetalKit.framework in Frameworks */,
+				B1A3D8F63B97F74742767920 /* QuartzCore.framework in Frameworks */,
+				088CEFD961DEA8D9C1E17BD9 /* Security.framework in Frameworks */,
+				0AE2C4A3F2B2AB2D9BDCD49D /* UIKit.framework in Frameworks */,
+				A6519E54F7B50E2B48200E05 /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00E92DB887B69424E88E7C28 /* daemon */ = {
+			isa = PBXGroup;
+			children = (
+				1EC66E6AE065C8F5C3736204 /* mod.rs */,
+			);
+			path = daemon;
+			sourceTree = "<group>";
+		};
+		028BD8C15678FD9885790817 /* permissions */ = {
+			isa = PBXGroup;
+			children = (
+				8AADE7172958C82F36B0D72F /* mod.rs */,
+			);
+			path = permissions;
+			sourceTree = "<group>";
+		};
+		2E37CE8F2FACCD54DEDCC08A /* usb */ = {
+			isa = PBXGroup;
+			children = (
+				02BFDC88C8389436FB7A7B1E /* mod.rs */,
+			);
+			path = usb;
+			sourceTree = "<group>";
+		};
+		46CF6D28C862696132D58F74 /* bindings */ = {
+			isa = PBXGroup;
+			children = (
+				569F92683A050F614C02C388 /* bindings.h */,
+			);
+			path = bindings;
+			sourceTree = "<group>";
+		};
+		4D196AB5A2F55D544E84CF9D /* reachy-mini-control */ = {
+			isa = PBXGroup;
+			children = (
+				237B075D6BF07C699CED5D0E /* main.mm */,
+				46CF6D28C862696132D58F74 /* bindings */,
+			);
+			path = "reachy-mini-control";
+			sourceTree = "<group>";
+		};
+		543E227D2AD619DFE61AB570 = {
+			isa = PBXGroup;
+			children = (
+				2ED6E124E714F7178F57323E /* assets */,
+				A8F556EA0F3821722D89B509 /* Assets.xcassets */,
+				2EAA743362D4AF32DBE2A9EA /* LaunchScreen.storyboard */,
+				E082004CDD313A8D458E3223 /* Externals */,
+				977FF34C12A8922E9B8C92C4 /* reachy-mini-control_iOS */,
+				8B303AC3D1B91887C174B7F2 /* Sources */,
+				79810F87CEE231B09FDB6BA1 /* src */,
+				82026482A575C89FC02DF06A /* Frameworks */,
+				C8806A595095BEF2DDA240CE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		79810F87CEE231B09FDB6BA1 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				C321D03E04866457447E059A /* lib.rs */,
+				ACA79D2E76C5FDA7F01CA5BC /* main.rs */,
+				00E92DB887B69424E88E7C28 /* daemon */,
+				028BD8C15678FD9885790817 /* permissions */,
+				CEC514D044A94586AB6ED56A /* python */,
+				F8D65D154BE6766EFB4ECA3A /* signing */,
+				2E37CE8F2FACCD54DEDCC08A /* usb */,
+				A2ACD42350D6A4C076B409E5 /* window */,
+			);
+			name = src;
+			path = ../../src;
+			sourceTree = "<group>";
+		};
+		82026482A575C89FC02DF06A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BC307F042F42E77032EBD687 /* CoreGraphics.framework */,
+				03D70C6A7C04985870774094 /* libapp.a */,
+				ACF485C064BFF0F4A7B2B257 /* Metal.framework */,
+				83EAB5E704F2E0ED82C385F2 /* MetalKit.framework */,
+				65B89E542C34E25ADDC7543C /* QuartzCore.framework */,
+				00FA19A20BA736EBFF94E2D9 /* Security.framework */,
+				1144477161CE0FCA023459E9 /* UIKit.framework */,
+				18E750A682E0FCF85E396814 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8B303AC3D1B91887C174B7F2 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4D196AB5A2F55D544E84CF9D /* reachy-mini-control */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		977FF34C12A8922E9B8C92C4 /* reachy-mini-control_iOS */ = {
+			isa = PBXGroup;
+			children = (
+				960A657EF0584A432CCFF7BB /* Info.plist */,
+				F05099E2F5607229283CC3D0 /* reachy-mini-control_iOS.entitlements */,
+			);
+			path = "reachy-mini-control_iOS";
+			sourceTree = "<group>";
+		};
+		A2ACD42350D6A4C076B409E5 /* window */ = {
+			isa = PBXGroup;
+			children = (
+				47AFB2F47E6216FE8F98A6F7 /* mod.rs */,
+			);
+			path = window;
+			sourceTree = "<group>";
+		};
+		C8806A595095BEF2DDA240CE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F9801C8B1F30304A8115A443 /* Reachy Mini Control.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CEC514D044A94586AB6ED56A /* python */ = {
+			isa = PBXGroup;
+			children = (
+				905B7182FC38D378CAB7F5F9 /* mod.rs */,
+			);
+			path = python;
+			sourceTree = "<group>";
+		};
+		E082004CDD313A8D458E3223 /* Externals */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Externals;
+			sourceTree = "<group>";
+		};
+		F8D65D154BE6766EFB4ECA3A /* signing */ = {
+			isa = PBXGroup;
+			children = (
+				0C8CA76A10BED70C778DB4CB /* mod.rs */,
+			);
+			path = signing;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BEC0D019AA68940EE5A1D374 /* reachy-mini-control_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D17106A8E135FAD2E013875D /* Build configuration list for PBXNativeTarget "reachy-mini-control_iOS" */;
+			buildPhases = (
+				27D89EDBCAE029D4ECF2B720 /* Build Rust Code */,
+				79A62920FA646F945109C2BC /* Sources */,
+				FC3597C7BBDDC96A65E5F887 /* Resources */,
+				06B4E047FEEBD2F2153D5649 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "reachy-mini-control_iOS";
+			packageProductDependencies = (
+			);
+			productName = "reachy-mini-control_iOS";
+			productReference = F9801C8B1F30304A8115A443 /* Reachy Mini Control.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		97230F1C2E246373778FEEAA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = C6F8A5AAF1E733FE1798B142 /* Build configuration list for PBXProject "reachy-mini-control" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 543E227D2AD619DFE61AB570;
+			minimizedProjectReferenceProxies = 1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BEC0D019AA68940EE5A1D374 /* reachy-mini-control_iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FC3597C7BBDDC96A65E5F887 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				397F5B8B1D2A506F9CF50524 /* Assets.xcassets in Resources */,
+				291A9E50AC3A239589FDB359 /* LaunchScreen.storyboard in Resources */,
+				53A01FC74B5BD1299BCAB7EC /* assets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		27D89EDBCAE029D4ECF2B720 /* Build Rust Code */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build Rust Code";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Externals/x86_64/${CONFIGURATION}/libapp.a",
+				"$(SRCROOT)/Externals/arm64/${CONFIGURATION}/libapp.a",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "npm run -- tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths \"${FRAMEWORK_SEARCH_PATHS:?}\" --header-search-paths \"${HEADER_SEARCH_PATHS:?}\" --gcc-preprocessor-definitions \"${GCC_PREPROCESSOR_DEFINITIONS:-}\" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		79A62920FA646F945109C2BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9E7B84189151D30122040E5 /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		10AA2999A83ECBDBFE3B1DE3 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "reachy-mini-control_iOS/reachy-mini-control_iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = ZLVKZMU9AC;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = "reachy-mini-control_iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=arm64]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				PRODUCT_NAME = "Reachy Mini Control";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = debug;
+		};
+		3BF60232D35BA44E5730D3FA /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "reachy-mini-control_iOS/reachy-mini-control_iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = ZLVKZMU9AC;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = "reachy-mini-control_iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=arm64]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				PRODUCT_NAME = "Reachy Mini Control";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = release;
+		};
+		B97F0D209E27B81BA6578DDD /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = debug;
+		};
+		D218B85F16FE5591577A8D01 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C6F8A5AAF1E733FE1798B142 /* Build configuration list for PBXProject "reachy-mini-control" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B97F0D209E27B81BA6578DDD /* debug */,
+				D218B85F16FE5591577A8D01 /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+		D17106A8E135FAD2E013875D /* Build configuration list for PBXNativeTarget "reachy-mini-control_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				10AA2999A83ECBDBFE3B1DE3 /* debug */,
+				3BF60232D35BA44E5730D3FA /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 97230F1C2E246373778FEEAA /* Project object */;
+}

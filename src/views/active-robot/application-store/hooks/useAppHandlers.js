@@ -92,9 +92,14 @@ export function useAppHandlers({
       if (currentApp && currentApp.info && currentApp.info.name !== appName) {
         const shouldStop = window.confirm(`${currentApp.info.name} is currently running. Stop it and launch ${appName}?`);
         if (!shouldStop) return;
-        
-        // Stop the current app
-        await stopCurrentApp();
+
+        // Stop the current app (gracefully handle if already stopped)
+        try {
+          await stopCurrentApp();
+        } catch (err) {
+          // If app is already stopped (400 error), that's fine - continue anyway
+          console.warn(`⚠️ Stop failed (app may already be stopped): ${err.message}`);
+        }
         unlockApp(); // Unlock
         // Wait a bit for the app to stop
         await new Promise(resolve => setTimeout(resolve, DAEMON_CONFIG.APP_INSTALLATION.HANDLER_DELAY));

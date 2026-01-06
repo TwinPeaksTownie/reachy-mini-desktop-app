@@ -10,6 +10,10 @@ const isWebMode = import.meta.env.VITE_WEB_MODE === 'true' || !window.__TAURI__;
 const isDevPath = window.location.pathname === '/dev' || window.location.hash === '#dev';
 const DEV_MODE = isDevPath && !isWebMode;
 
+// 📱 MOBILE MODE DETECTION
+// Detect iOS/Android user agent or build flag
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || import.meta.env.VITE_MOBILE_MODE === 'true';
+
 // Mock Tauri APIs if not in Tauri (browser/web mode)
 if (typeof window !== 'undefined' && !window.__TAURI__) {
   window.__TAURI__ = {
@@ -20,20 +24,22 @@ if (typeof window !== 'undefined' && !window.__TAURI__) {
       }
     }
   };
-  
+
   const mockWindow = {
     startDragging: () => {
       return Promise.resolve();
     },
     label: isWebMode ? 'web-dashboard' : 'dev-window'
   };
-  
+
   window.mockGetCurrentWindow = () => mockWindow;
 }
 
 import App from './components/App';
 import DevPlayground from './components/DevPlayground';
 import WebApp from './components/WebApp';
+import ConnectionView from './ios_app/views/ConnectionView';
+import { useConnectionStore } from './ios_app/store/useConnectionStore';
 import robotModelCache from './utils/robotModelCache';
 import { disableSimulationMode } from './utils/simulationMode';
 
@@ -57,25 +63,25 @@ setTimeout(() => {
 // Theme wrapper component that adapts to darkMode
 function ThemeWrapper({ children }) {
   const darkMode = useAppStore(state => state.darkMode);
-  
+
   const theme = useMemo(() => createTheme({
-  palette: {
+    palette: {
       mode: darkMode ? 'dark' : 'light',
-    primary: {
-      main: '#FF9500',
-      light: '#FFB340',
-      dark: '#E08500',
-      contrastText: '#fff',
-    },
-    secondary: {
-      main: '#764ba2',
-    },
-    success: {
-      main: '#22c55e',
-    },
-    error: {
-      main: '#ef4444',
-    },
+      primary: {
+        main: '#FF9500',
+        light: '#FFB340',
+        dark: '#E08500',
+        contrastText: '#fff',
+      },
+      secondary: {
+        main: '#764ba2',
+      },
+      success: {
+        main: '#22c55e',
+      },
+      error: {
+        main: '#ef4444',
+      },
       divider: darkMode ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.18)',
     },
     components: {
@@ -116,8 +122,8 @@ function ThemeWrapper({ children }) {
             fontWeight: 500,
             padding: '10px 14px',
             borderRadius: '8px',
-            boxShadow: darkMode 
-              ? '0 4px 12px rgba(0, 0, 0, 0.25)' 
+            boxShadow: darkMode
+              ? '0 4px 12px rgba(0, 0, 0, 0.25)'
               : '0 4px 12px rgba(0, 0, 0, 0.15)',
             maxWidth: '300px',
             lineHeight: 1.6,
@@ -185,7 +191,7 @@ function ThemeWrapper({ children }) {
           },
         },
       },
-  },
+    },
   }), [darkMode]);
 
   return (
@@ -196,11 +202,20 @@ function ThemeWrapper({ children }) {
   );
 }
 
-// Choose component to display based on mode
-// Priority: WebMode > DevMode > Normal App
-const RootComponent = isWebMode ? WebApp : (DEV_MODE ? DevPlayground : App);
+// Wrapper for Mobile Flow
+function MobileEntry() {
+  const { isConnected } = useConnectionStore();
+  // If not connected, show connection screen
+  // If connected, show the main App (Control Dashboard)
+  // Note: App component will need to be adapted to not start the daemon itself if isMobile
+  return isConnected ? <App /> : <ConnectionView />;
+}
 
-console.log(`[Main] Mode: ${isWebMode ? 'WEB' : (DEV_MODE ? 'DEV' : 'TAURI')}`);
+// Choose component to display based on mode
+// Priority: WebMode > DevMode > Mobile > Normal App
+const RootComponent = isWebMode ? WebApp : (DEV_MODE ? DevPlayground : (isMobile ? MobileEntry : App));
+
+console.log(`[Main] Mode: ${isWebMode ? 'WEB' : (DEV_MODE ? 'DEV' : (isMobile ? 'MOBILE' : 'TAURI'))}`);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

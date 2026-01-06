@@ -3,6 +3,7 @@
  */
 
 import { logApiCall, logPermission, logTimeout, logError, logSuccess } from '../utils/logging';
+import { useConnectionStore } from '../ios_app/store/useConnectionStore';
 
 export const DAEMON_CONFIG = {
   // API timeouts (in milliseconds)
@@ -21,7 +22,7 @@ export const DAEMON_CONFIG = {
     JOB_STATUS: 120000,     // Poll job status (long installations)
     PERMISSION_POPUP_WAIT: 30000, // Max wait for system popup (macOS/Windows)
   },
-  
+
   // Polling intervals (in milliseconds)
   INTERVALS: {
     // ✅ STATUS_CHECK removed - useDaemonHealthCheck handles status checking automatically (every 1.33s)
@@ -33,7 +34,7 @@ export const DAEMON_CONFIG = {
     JOB_POLLING: 500,         // Poll job install/remove every 500ms
     CURRENT_APP_REFRESH: 300, // Delay before refresh after stop app
   },
-  
+
   // Crash detection
   CRASH_DETECTION: {
     MAX_TIMEOUTS: 3,           // Crash after 3 timeouts over 4 seconds (~1.33s × 3)
@@ -42,21 +43,21 @@ export const DAEMON_CONFIG = {
     JOB_MAX_FAILS: 20,         // 20 polling failures = job failed
     JOB_CLEANUP_DELAY: 10000,  // 10s before cleaning up a failed job
   },
-  
+
   // Startup timeouts (in milliseconds)
   STARTUP: {
     TIMEOUT_NORMAL: 30000,     // 30s for normal mode (robot connected)
     TIMEOUT_SIMULATION: 180000, // 3 minutes for simulation mode (MuJoCo install can take time)
     ACTIVITY_RESET_DELAY: 15000, // Reset timeout when we see activity (logs from sidecar)
   },
-  
+
   // Log management
   LOGS: {
     MAX_FRONTEND: 500,   // Max frontend logs (user actions, API calls) - increased for better history
     MAX_APP: 1000,       // Max app logs (more verbose than frontend) - increased for better history
     MAX_DISPLAY: 10000,  // Max logs to keep in memory (virtualization handles rendering efficiently)
   },
-  
+
   // Animation/transition durations
   ANIMATIONS: {
     MODEL_LOAD_TIME: 1000,       // ⚡ 3D model loading time (margin)
@@ -71,7 +72,7 @@ export const DAEMON_CONFIG = {
     BUTTON_SPINNER_DELAY: 500,   // Delay to see spinner in button before view switch
     STOP_DAEMON_DELAY: 2000,     // Delay after stopping daemon before resetting state
   },
-  
+
   // Minimum display times for views (UX smoothness)
   MIN_DISPLAY_TIMES: {
     UPDATE_CHECK: 2000,          // Minimum time to show update check (2s)
@@ -79,7 +80,7 @@ export const DAEMON_CONFIG = {
     USB_CHECK_FIRST: 1500,        // Minimum delay for first USB check (1.5s)
     APP_UNINSTALL: 4000,         // Minimum display time for uninstall result (4s)
   },
-  
+
   // Update check intervals
   UPDATE_CHECK: {
     INTERVAL: 3600000,            // Check for updates every hour (1h)
@@ -87,7 +88,7 @@ export const DAEMON_CONFIG = {
     RETRY_DELAY: 1000,            // Delay between retry attempts (1s)
     CHECK_TIMEOUT: 30000,         // Timeout for check() call (30s) - prevents infinite blocking
   },
-  
+
   // Robot movement and commands
   MOVEMENT: {
     CONTINUOUS_MOVE_TIMEOUT: 200, // Timeout for continuous move requests (200ms)
@@ -99,17 +100,18 @@ export const DAEMON_CONFIG = {
     TOLERANCE_MEDIUM: 0.005, // For array comparisons (arraysEqual default)
     TOLERANCE_LARGE: 0.01,   // For movement filtering (useRobotPowerState)
   },
-  
+
   // App installation delays
   APP_INSTALLATION: {
     RESULT_DISPLAY_DELAY: 3000,   // Delay after showing success state before closing (3s)
     HANDLER_DELAY: 500,            // Small delay in app handlers (500ms)
     REFRESH_DELAY: 500,            // Delay before refreshing app list (500ms)
   },
-  
+
   // API endpoints
   ENDPOINTS: {
-    BASE_URL: 'http://localhost:8000',
+    // BASE_URL is now dynamic, use buildApiUrl() helper
+    get BASE_URL() { return useConnectionStore.getState().getApiUrl(); },
     STATE_FULL: '/api/state/full',
     DAEMON_STATUS: '/api/daemon/status',
     EMOTIONS_LIST: '/api/move/recorded-move-datasets/list/pollen-robotics/reachy-mini-emotions-library',
@@ -118,7 +120,7 @@ export const DAEMON_CONFIG = {
     MICROPHONE_CURRENT: '/api/volume/microphone/current',
     MICROPHONE_SET: '/api/volume/microphone/set',
   },
-  
+
   // Endpoints to NOT log (frequent polling)
   SILENT_ENDPOINTS: [
     '/api/state/full',      // Poll every 3s
@@ -149,10 +151,10 @@ export function setAppStoreInstance(store) {
  */
 function isPermissionDeniedError(error) {
   if (!error) return false;
-  
+
   const errorMsg = error.message?.toLowerCase() || '';
   const errorName = error.name?.toLowerCase() || '';
-  
+
   // Common patterns for denied permissions
   const permissionPatterns = [
     'permission denied',
@@ -165,8 +167,8 @@ function isPermissionDeniedError(error) {
     'user cancelled',
     'operation not permitted',
   ];
-  
-  return permissionPatterns.some(pattern => 
+
+  return permissionPatterns.some(pattern =>
     errorMsg.includes(pattern) || errorName.includes(pattern)
   );
 }
@@ -176,7 +178,7 @@ function isPermissionDeniedError(error) {
  */
 function isLikelySystemPopupTimeout(error, duration, timeoutMs) {
   if (error?.name !== 'TimeoutError') return false;
-  
+
   // If timeout arrives very close to the limit, it's probably a popup
   // that blocked execution for almost the entire timeout
   const timeoutRatio = duration / timeoutMs;
@@ -185,22 +187,23 @@ function isLikelySystemPopupTimeout(error, duration, timeoutMs) {
 
 export async function fetchWithTimeout(url, options = {}, timeoutMs, logOptions = {}) {
   const { silent = false, label = null } = logOptions;
-  
+
   // Extract endpoint from URL
-  const endpoint = url.replace(DAEMON_CONFIG.ENDPOINTS.BASE_URL, '');
+  const baseUrl = DAEMON_CONFIG.ENDPOINTS.BASE_URL;
+  const endpoint = url.replace(baseUrl, '');
   const baseEndpoint = endpoint.split('?')[0]; // Without query params
-  
+
   // Check if it's a silent endpoint
   const shouldBeSilent = silent || DAEMON_CONFIG.SILENT_ENDPOINTS.some(e => baseEndpoint.startsWith(e));
-  
+
   const method = options.method || 'GET';
   const startTime = Date.now();
-  
+
   try {
     // Create AbortController to be able to cancel manually if needed
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-    
+
     // If an external signal is provided, combine it with the timeout signal
     let finalSignal = controller.signal;
     if (options.signal) {
@@ -214,15 +217,15 @@ export async function fetchWithTimeout(url, options = {}, timeoutMs, logOptions 
         });
       }
     }
-    
+
     const response = await fetch(url, {
       ...options,
       signal: finalSignal,
     });
-    
+
     clearTimeout(timeoutId);
     const duration = Date.now() - startTime;
-    
+
     // Log result if not silent
     if (!shouldBeSilent) {
       if (label) {
@@ -235,14 +238,14 @@ export async function fetchWithTimeout(url, options = {}, timeoutMs, logOptions 
         }
       } else {
         // Use standard API call logging
-      logApiCall(method, baseEndpoint, response.ok, response.ok ? '' : `(${response.status})`);
+        logApiCall(method, baseEndpoint, response.ok, response.ok ? '' : `(${response.status})`);
       }
     }
-    
+
     return response;
   } catch (error) {
     const duration = Date.now() - startTime;
-    
+
     // Log error if not silent
     if (!shouldBeSilent) {
       if (label) {
@@ -261,45 +264,45 @@ export async function fetchWithTimeout(url, options = {}, timeoutMs, logOptions 
         }
       }
     }
-    
+
     // Detect permission errors
     if (isPermissionDeniedError(error)) {
       const permissionError = new Error('Permission denied by user or system');
       permissionError.name = 'PermissionDeniedError';
       permissionError.originalError = error;
-      
+
       if (!shouldBeSilent) {
         const logLabel = label || `${method} ${baseEndpoint}`;
         logPermission(`${logLabel} (permission denied)`);
       }
-      
+
       throw permissionError;
     }
-    
+
     // Detect timeouts potentially due to system popups
     if (isLikelySystemPopupTimeout(error, duration, timeoutMs)) {
       const popupError = new Error('Request timed out - system permission popup may be waiting');
       popupError.name = 'SystemPopupTimeoutError';
       popupError.originalError = error;
       popupError.duration = duration;
-      
+
       if (!shouldBeSilent) {
         const logLabel = label || `${method} ${baseEndpoint}`;
         logTimeout(`${logLabel} (timeout - check system permissions)`);
       }
-      
+
       throw popupError;
     }
-    
+
     // Log standard error if not silent
     if (!shouldBeSilent) {
       const logLabel = label || `${method} ${baseEndpoint}`;
-      const errorMsg = error.name === 'AbortError' || error.name === 'TimeoutError' 
-        ? 'timeout' 
+      const errorMsg = error.name === 'AbortError' || error.name === 'TimeoutError'
+        ? 'timeout'
         : error.message;
       logApiCall(method, baseEndpoint, false, errorMsg);
     }
-    
+
     throw error;
   }
 }
@@ -375,11 +378,11 @@ export function transitionToActiveView({ setIsStarting, setIsTransitioning, setI
   setTimeout(() => {
     // ⚡ Step 1: Hide StartingView
     setIsStarting(false);
-    
+
     // ⚡ Step 2: After micro-delay, show TransitionView and trigger resize
     setTimeout(() => {
       setIsTransitioning(true);
-      
+
       // ⚡ Step 3: After resize, switch to ActiveRobotView
       setTimeout(() => {
         setIsActive(true);
