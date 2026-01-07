@@ -39,7 +39,7 @@ echo "📦 Installing sidecar with REACHY_MINI_SOURCE=$REACHY_MINI_SOURCE..."
 ./target/release/uv-bundle \
     --install-dir "../$DST_DIR" \
     --python-version 3.12 \
-    --dependencies "reachy-mini[mujoco]" \
+    --dependencies "reachy-mini[mujoco,placo_kinematics,ultra_analytics]" \
     --reachy-mini-source "$REACHY_MINI_SOURCE"
 
 # Build uv-trampoline
