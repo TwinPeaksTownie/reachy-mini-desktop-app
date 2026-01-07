@@ -36,7 +36,7 @@ fn main() {
         "curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=. UV_NO_MODIFY_PATH=1 sh",
     )
     .expect("Failed to install uv");
-    
+
     // On Windows, download uv directly (the install.ps1 script has issues with Get-ExecutionPolicy on CI)
     // IMPORTANT: Use curl.exe (not curl which is a PowerShell alias for Invoke-WebRequest)
     #[cfg(target_os = "windows")]
@@ -44,22 +44,21 @@ fn main() {
         // Download uv zip from GitHub releases using curl.exe (the real curl, not the PowerShell alias)
         run_command("curl.exe -L -o uv.zip https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-pc-windows-msvc.zip")
             .expect("Failed to download uv");
-        
+
         // Extract the zip (PowerShell's Expand-Archive)
         run_command("Expand-Archive -Path uv.zip -DestinationPath . -Force")
             .expect("Failed to extract uv");
-        
+
         // Clean up zip file
-        run_command("Remove-Item uv.zip -Force")
-            .expect("Failed to remove uv.zip");
-        
+        run_command("Remove-Item uv.zip -Force").expect("Failed to remove uv.zip");
+
         println!("✅ uv installed successfully on Windows");
     }
 
     // Install Python using uv
     #[cfg(not(target_os = "windows"))]
     run_command(&format!(
-        "UV_PYTHON_INSTALL_DIR=. ./uv python install {}",
+        "UV_PYTHON_INSTALL_DIR=. ./uv python install {} --force",
         python_version
     ))
     .expect("Failed to install python");
@@ -81,12 +80,15 @@ fn main() {
     // Installing dependencies
     if !args.dependencies.is_empty() {
         let mut deps = args.dependencies;
-        
+
         // Replace reachy-mini with GitHub version if a branch is specified (not "pypi")
         let is_github_source = args.reachy_mini_source != "pypi";
         if is_github_source {
             let branch = &args.reachy_mini_source;
-            let github_url = format!("git+https://github.com/pollen-robotics/reachy_mini.git@{}", branch);
+            let github_url = format!(
+                "git+https://github.com/pollen-robotics/reachy_mini.git@{}",
+                branch
+            );
             deps = deps
                 .iter()
                 .map(|dep| {
@@ -106,7 +108,7 @@ fn main() {
                 })
                 .collect();
         }
-        
+
         let deps_str = deps.join(" ");
         #[cfg(not(target_os = "windows"))]
         {
@@ -138,4 +140,3 @@ fn main() {
         }
     }
 }
-
