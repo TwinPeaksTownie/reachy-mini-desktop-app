@@ -30,8 +30,8 @@ cd uv-wrapper
 echo "🔨 Building uv-bundle..."
 cargo build --release --bin uv-bundle
 
-# Use REACHY_MINI_SOURCE env var if set, default to 'pypi'
-REACHY_MINI_SOURCE="${REACHY_MINI_SOURCE:-pypi}"
+# Use REACHY_MINI_SOURCE env var if set, default to TwinPeaksTownie's fork
+REACHY_MINI_SOURCE="${REACHY_MINI_SOURCE:-git+https://github.com/TwinPeaksTownie/reachy_mini.git@feat/camera-api-macos}"
 
 echo "📦 Installing sidecar with REACHY_MINI_SOURCE=$REACHY_MINI_SOURCE..."
 # Install reachy-mini with mujoco pre-bundled (basic kinematics)
