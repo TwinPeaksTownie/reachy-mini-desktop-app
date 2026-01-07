@@ -72,7 +72,7 @@ pub fn build_daemon_args(sim_mode: bool) -> Result<Vec<String>, String> {
         "Placo".to_string(),
         "--desktop-app-daemon".to_string(),
         "--log-level".to_string(),
-        "warning".to_string(),
+        "WARNING".to_string(),
     ];
 
     if sim_mode {
