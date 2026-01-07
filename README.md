@@ -53,13 +53,14 @@ This desktop application provides a unified interface to manage your Reachy Mini
 ```bash
 # Clone the repository
 git clone https://github.com/pollen-robotics/reachy-mini-desktop-app.git
-cd reachy-mini-desktop-app/tauri-app
+cd reachy-mini-desktop-app
 
-# Install dependencies
-yarn install
+# Run the automated start script
+# This handles dependency installation and sidecar building for you
+./start.sh
 
-# Run in development mode
-yarn tauri:devc
+# To force a rebuild of the sidecar:
+./start.sh --rebuild
 ```
 
 ```bash
@@ -100,6 +101,7 @@ By default, the `reachy-mini` package is installed from PyPI (latest stable rele
 - **GitHub branch** : `REACHY_MINI_SOURCE=<branch-name>` (e.g., `develop`, `main`, `feature/xyz`)
 
 Examples to build the sidecar with different sources:
+
 ```bash
 # Build with develop branch
 REACHY_MINI_SOURCE=develop bash ./scripts/build/build-sidecar-unix.sh
@@ -137,12 +139,14 @@ Apps are managed through the FastAPI daemon API, which handles installation and 
 ### Available Scripts
 
 **Development:**
+
 ```bash
 yarn dev                    # Start Vite dev server only
 yarn tauri:dev              # Run Tauri app in dev mode
 ```
 
 **Building:**
+
 ```bash
 # Build sidecar (required before tauri:build)
 yarn build:sidecar-macos              # macOS (PyPI)
@@ -163,6 +167,7 @@ yarn deploy:daemon-v2                 # Deploy to daemon dashboard
 ```
 
 **Updates:**
+
 ```bash
 yarn build:update:dev       # Build update files for local testing
 yarn build:update:prod      # Build update files for production
@@ -170,6 +175,7 @@ yarn serve:updates          # Serve updates locally for testing
 ```
 
 **Testing:**
+
 ```bash
 yarn test:sidecar           # Test the sidecar build
 yarn test:app               # Test the complete application
@@ -179,6 +185,7 @@ yarn test:all               # Run all tests
 ```
 
 **Utilities:**
+
 ```bash
 yarn check-daemon           # Check daemon status and health
 yarn kill-daemon            # Stop all running daemon processes
@@ -319,6 +326,7 @@ flowchart TB
 ```
 
 **Key Architecture Points:**
+
 - **Hooks** are organized by domain (daemon, robot, system) for better maintainability
 - **Views** are organized in dedicated folders with their associated components
 - **Store** uses a composite pattern with specialized sub-stores
@@ -363,6 +371,7 @@ stateDiagram-v2
 ```
 
 **Priority order (highest to lowest):**
+
 1. 🔐 **Permissions** (macOS only) - Blocks until camera/microphone granted
 2. 🔄 **Update** - Check and download updates
 3. 🔌 **USB Check** - Detect robot connection
