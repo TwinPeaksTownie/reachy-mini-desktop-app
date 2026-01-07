@@ -81,26 +81,38 @@ fn main() {
     if !args.dependencies.is_empty() {
         let mut deps = args.dependencies;
 
-        // Replace reachy-mini with GitHub version if a branch is specified (not "pypi")
-        let is_github_source = args.reachy_mini_source != "pypi";
-        if is_github_source {
-            let branch = &args.reachy_mini_source;
-            let github_url = format!(
-                "git+https://github.com/pollen-robotics/reachy_mini.git@{}",
-                branch
-            );
+        // Replace reachy-mini with GitHub version or local path if specified (not "pypi")
+        let is_custom_source = args.reachy_mini_source != "pypi";
+        let mut is_github_source = false;
+
+        if is_custom_source {
+            let source = &args.reachy_mini_source;
+            let is_path = source.contains('/') || source.contains('\\');
+            is_github_source = !is_path;
+
+            let source_url = if is_path {
+                println!("📦 Using local path source: {}", source);
+                source.to_string()
+            } else {
+                println!("📦 Using GitHub branch source: {}", source);
+                format!(
+                    "git+https://github.com/pollen-robotics/reachy_mini.git@{}",
+                    source
+                )
+            };
+
             deps = deps
                 .iter()
                 .map(|dep| {
-                    // Replace reachy-mini[...] with git+https://...@<branch>[...]
+                    // Replace reachy-mini[...] with source[...]
                     if dep.starts_with("reachy-mini") {
                         if let Some(extras_start) = dep.find('[') {
                             // Has extras like [placo_kinematics]
                             let extras = &dep[extras_start..];
-                            format!("{}{}", github_url, extras)
+                            format!("{}{}", source_url, extras)
                         } else {
                             // No extras
-                            github_url.clone()
+                            source_url.clone()
                         }
                     } else {
                         dep.clone()
