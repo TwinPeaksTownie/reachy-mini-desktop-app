@@ -12,8 +12,8 @@ import { Overlay as InstallOverlay } from '../../application-store/installation'
  * Applications Section - Displays installed and available apps from Hugging Face
  * Uses ActiveRobotContext for decoupling from global stores
  */
-export default function ApplicationsSection({ 
-  showToast, 
+export default function ApplicationsSection({
+  showToast,
   onLoadingChange,
   hasQuickActions = false, // To adjust padding-top of AccordionSummary
   isActive = false,
@@ -21,9 +21,9 @@ export default function ApplicationsSection({
   darkMode = false,
 }) {
   const { robotState, actions } = useActiveRobotContext();
-  
+
   // Get values from context with prop fallbacks
-  const { 
+  const {
     darkMode: contextDarkMode,
     isActive: contextIsActive,
     installingAppName,
@@ -31,13 +31,13 @@ export default function ApplicationsSection({
     installResult,
     installStartTime,
   } = robotState;
-  
+
   const effectiveDarkMode = darkMode !== undefined ? darkMode : contextDarkMode;
   const effectiveIsActive = isActive !== undefined ? isActive : contextIsActive;
   const effectiveIsBusy = isBusy !== undefined ? isBusy : actions.isBusy();
-  
+
   const [officialOnly, setOfficialOnly] = useState(true);
-  
+
   const {
     availableApps,
     installedApps,
@@ -49,20 +49,21 @@ export default function ApplicationsSection({
     stopCurrentApp,
     fetchAvailableApps,
     isLoading,
+    signBinaries,
   } = useApps(effectiveIsActive, officialOnly);
-  
+
   useEffect(() => {
     if (onLoadingChange) {
       onLoadingChange(isLoading);
     }
   }, [isLoading, onLoadingChange]);
-  
+
   const [selectedCategory, setSelectedCategory] = useState(null);
-  
+
   useEffect(() => {
     setSelectedCategory(null);
   }, [officialOnly]);
-  
+
   useAppInstallation({
     activeJobs,
     installedApps,
@@ -75,7 +76,7 @@ export default function ApplicationsSection({
       }
     },
   });
-  
+
   const {
     expandedApp,
     setExpandedApp,
@@ -94,18 +95,18 @@ export default function ApplicationsSection({
     stopCurrentApp,
     showToast,
   });
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [modalStack, setModalStack] = useState([]);
-  
+
   const openModal = (modalType) => {
     setModalStack(prev => [...prev, modalType]);
   };
-  
+
   const closeModal = () => {
     setModalStack(prev => prev.slice(0, -1));
   };
-  
+
   const discoverModalOpen = modalStack[modalStack.length - 1] === 'discover';
   const createAppTutorialModalOpen = modalStack[modalStack.length - 1] === 'createTutorial';
 
@@ -123,7 +124,7 @@ export default function ApplicationsSection({
       extra: {},
     };
   }, [installingAppName, availableApps]);
-  
+
   const activeJobsArray = Array.from(activeJobs.values());
   const installingJob = installingAppName
     ? activeJobsArray.find(job => job.appName === installingAppName)
@@ -136,13 +137,13 @@ export default function ApplicationsSection({
       const cardDataTags = app.extra?.cardData?.tags || [];
       const allTags = [...new Set([...rootTags, ...cardDataTags])];
       const sdk = app.extra?.sdk || app.extra?.cardData?.sdk;
-      
+
       allTags.forEach(tag => {
         if (tag && typeof tag === 'string') {
-          if (!tag.startsWith('region:') && 
-              tag.toLowerCase() !== 'reachy_mini' && 
-              tag.toLowerCase() !== 'reachy-mini' &&
-              tag.toLowerCase() !== 'static') {
+          if (!tag.startsWith('region:') &&
+            tag.toLowerCase() !== 'reachy_mini' &&
+            tag.toLowerCase() !== 'reachy-mini' &&
+            tag.toLowerCase() !== 'static') {
             if (sdk && tag.toLowerCase() === sdk.toLowerCase()) {
               categoryMap.set(tag, (categoryMap.get(tag) || 0) + 1);
             } else {
@@ -151,10 +152,10 @@ export default function ApplicationsSection({
           }
         }
       });
-      
+
       if (sdk && typeof sdk === 'string') {
         const sdkLower = sdk.toLowerCase();
-        const hasMatchingTag = allTags.some(tag => 
+        const hasMatchingTag = allTags.some(tag =>
           tag && typeof tag === 'string' && tag.toLowerCase() === sdkLower
         );
         if (!hasMatchingTag) {
@@ -163,7 +164,7 @@ export default function ApplicationsSection({
         }
       }
     });
-    
+
     return Array.from(categoryMap.entries())
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => {
@@ -177,19 +178,19 @@ export default function ApplicationsSection({
 
   const filteredApps = useMemo(() => {
     let apps = [...availableApps];
-    
+
     if (selectedCategory) {
       apps = apps.filter(app => {
         const rootTags = app.extra?.tags || [];
         const cardDataTags = app.extra?.cardData?.tags || [];
         const allTags = [...new Set([...rootTags, ...cardDataTags])];
         const sdk = app.extra?.sdk || app.extra?.cardData?.sdk;
-        
+
         if (selectedCategory.startsWith('sdk:')) {
           const sdkCategory = selectedCategory.replace('sdk:', '');
           return sdk === sdkCategory;
         } else {
-          const tagMatches = allTags.some(tag => 
+          const tagMatches = allTags.some(tag =>
             tag && typeof tag === 'string' && tag.toLowerCase() === selectedCategory.toLowerCase()
           );
           const sdkMatches = sdk && typeof sdk === 'string' && sdk.toLowerCase() === selectedCategory.toLowerCase();
@@ -197,15 +198,15 @@ export default function ApplicationsSection({
         }
       });
     }
-    
+
     if (searchQuery && searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
-      apps = apps.filter(app => 
+      apps = apps.filter(app =>
         app.name.toLowerCase().includes(query) ||
         (app.description && app.description.toLowerCase().includes(query))
       );
     }
-    
+
     return apps;
   }, [availableApps, searchQuery, selectedCategory]);
 
@@ -243,9 +244,9 @@ export default function ApplicationsSection({
                   {installedApps.length}
                 </Typography>
               )}
-              <Tooltip 
-                title="Apps that are currently installed on your robot. You can start, stop, configure, or uninstall them from here." 
-                arrow 
+              <Tooltip
+                title="Apps that are currently installed on your robot. You can start, stop, configure, or uninstall them from here."
+                arrow
                 placement="top"
               >
                 <InfoOutlinedIcon sx={{ fontSize: 14, color: effectiveDarkMode ? '#666' : '#999', opacity: 0.6, cursor: 'help' }} />
@@ -261,6 +262,35 @@ export default function ApplicationsSection({
               Extend Reachy's capabilities
             </Typography>
           </Box>
+
+          {/* macOS Finalize Support */}
+          {window.__TAURI_INTERNALS__ && navigator.platform.toUpperCase().indexOf('MAC') >= 0 && (
+            <Box sx={{ flexShrink: 0 }}>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={signBinaries}
+                sx={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  textTransform: 'none',
+                  borderRadius: '6px',
+                  color: effectiveDarkMode ? '#666' : '#999',
+                  borderColor: effectiveDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                  px: 1,
+                  py: 0.25,
+                  minWidth: 'auto',
+                  '&:hover': {
+                    borderColor: '#FF9500',
+                    color: '#FF9500',
+                    bgcolor: 'transparent',
+                  }
+                }}
+              >
+                Finalize Install
+              </Button>
+            </Box>
+          )}
         </Box>
         <Box sx={{ px: 0, mb: 0, bgcolor: 'transparent' }}>
           <InstalledAppsSection

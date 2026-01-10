@@ -206,85 +206,86 @@ pub async fn sign_python_binaries() -> Result<String, String> {
         }
     };
     
-    // 4. Find and sign all binaries in .venv
-    // IMPORTANT: Sign in order: libpython first, then executables, then extensions
-    // Python binaries need disable-library-validation entitlement!
+    // 4. Find all venv directories and sign their binaries
+    // This includes the main .venv and any app-specific venvs (*_venv)
+    let mut venvs_to_sign = Vec::new();
+    
+    // Always include the main venv if it exists
+    if venv_dir.exists() {
+        venvs_to_sign.push(venv_dir.clone());
+    }
+    
+    // Look for other venvs in the same parent directory (apps venvs)
+    if let Some(parent) = venv_dir.parent() {
+        if let Ok(entries) = std::fs::read_dir(parent) {
+            for entry in entries {
+                if let Ok(entry) = entry {
+                    let path = entry.path();
+                    if path.is_dir() && (path.to_string_lossy().ends_with("_venv") || path.to_string_lossy().contains("_venv/")) {
+                        if !venvs_to_sign.contains(&path) {
+                            println!("[tauri] 📁 Found additional app venv: {}", path.display());
+                            venvs_to_sign.push(path);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     let mut signed_count = 0;
     let mut error_count = 0;
     
-    // Priority 1: Sign libpython*.dylib FIRST (critical for Python to load)
-    // Apply entitlements to libpython for disable-library-validation
-    let libpython_dylib = venv_dir.join("lib/libpython3.12.dylib");
-    if libpython_dylib.exists() {
-        println!("[tauri] 🔐 Signing libpython3.12.dylib with entitlements (priority)...");
-        if sign_binary_with_entitlements(&libpython_dylib, &signing_identity, python_entitlements.as_ref())? {
-            signed_count += 1;
-        } else {
-            error_count += 1;
-        }
-    }
-    
-    // Priority 2: Sign Python executables (python3, python3.12)
-    // Apply entitlements to python3 for disable-library-validation
-    let python_bin = venv_dir.join("bin/python3");
-    if python_bin.exists() {
-        println!("[tauri] 🔐 Signing python3 executable with entitlements...");
-        if sign_binary_with_entitlements(&python_bin, &signing_identity, python_entitlements.as_ref())? {
-            signed_count += 1;
-        } else {
-            error_count += 1;
-        }
-    }
-    
-    // Also sign python3.12 if it exists and is different from python3
-    let python312_bin = venv_dir.join("bin/python3.12");
-    if python312_bin.exists() && python312_bin != python_bin {
-        println!("[tauri] 🔐 Signing python3.12 executable with entitlements...");
-        if sign_binary_with_entitlements(&python312_bin, &signing_identity, python_entitlements.as_ref())? {
-            signed_count += 1;
-        } else {
-            error_count += 1;
-        }
-    }
-    
-    // Priority 3: Sign all other .dylib files (including libpython in other locations)
-    let dylib_files = find_files(&venv_dir, "*.dylib")
-        .map_err(|e| format!("Failed to find .dylib files: {}", e))?;
-    
-    for dylib_file in dylib_files {
-        // Skip libpython3.12.dylib if already signed above
-        if dylib_file == libpython_dylib {
-            continue;
-        }
-        // Apply entitlements to all libpython*.dylib files
-        let use_entitlements = dylib_file.file_name()
-            .map(|n| n.to_string_lossy().starts_with("libpython"))
-            .unwrap_or(false);
+    for current_venv in venvs_to_sign {
+        println!("[tauri] 🔐 Signing binaries in venv: {}", current_venv.display());
         
-        if use_entitlements {
-            if sign_binary_with_entitlements(&dylib_file, &signing_identity, python_entitlements.as_ref())? {
+        // Priority 1: Sign libpython*.dylib FIRST (critical for Python to load)
+        // Apply entitlements to libpython for disable-library-validation
+        let libpython_dylib = current_venv.join("lib/libpython3.12.dylib");
+        if libpython_dylib.exists() {
+            println!("[tauri]   🔐 Signing libpython3.12.dylib (priority)...");
+            if sign_binary_with_entitlements(&libpython_dylib, &signing_identity, python_entitlements.as_ref())? {
                 signed_count += 1;
             } else {
                 error_count += 1;
             }
-        } else {
-        if sign_binary(&dylib_file, &signing_identity)? {
-            signed_count += 1;
-        } else {
-            error_count += 1;
+        }
+        
+        // Priority 2: Sign Python executables (python3, python3.12)
+        let python_bin = current_venv.join("bin/python3");
+        if python_bin.exists() {
+            println!("[tauri]   🔐 Signing python3 executable...");
+            if sign_binary_with_entitlements(&python_bin, &signing_identity, python_entitlements.as_ref())? {
+                signed_count += 1;
+            } else {
+                error_count += 1;
             }
         }
-    }
-    
-    // Priority 4: Sign all .so files (Python extensions)
-    let so_files = find_files(&venv_dir, "*.so")
-        .map_err(|e| format!("Failed to find .so files: {}", e))?;
-    
-    for so_file in so_files {
-        if sign_binary(&so_file, &signing_identity)? {
-            signed_count += 1;
-        } else {
-            error_count += 1;
+        
+        // Priority 3: Sign all other .dylib files
+        let dylib_files = find_files(&current_venv, "*.dylib")
+            .map_err(|e| format!("Failed to find .dylib files: {}", e))?;
+        
+        for dylib_file in dylib_files {
+            if dylib_file == libpython_dylib {
+                continue;
+            }
+            if sign_binary(&dylib_file, &signing_identity)? {
+                signed_count += 1;
+            } else {
+                error_count += 1;
+            }
+        }
+        
+        // Priority 4: Sign all .so files (Python extensions)
+        let so_files = find_files(&current_venv, "*.so")
+            .map_err(|e| format!("Failed to find .so files: {}", e))?;
+        
+        for so_file in so_files {
+            if sign_binary(&so_file, &signing_identity)? {
+                signed_count += 1;
+            } else {
+                error_count += 1;
+            }
         }
     }
     
