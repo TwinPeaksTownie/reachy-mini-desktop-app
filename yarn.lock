@@ -1770,7 +1770,12 @@ postcss@^8.5.6:
     picocolors "^1.1.1"
     source-map-js "^1.2.1"
 
-postprocessing@^6.36.6, postprocessing@^6.37.8:
+postprocessing@6.38.2:
+  version "6.38.2"
+  resolved "https://registry.yarnpkg.com/postprocessing/-/postprocessing-6.38.2.tgz#e84f963f01da5d21a4cc4d4a6076a256550092d1"
+  integrity sha512-7DwuT7Tkst41ZjSj287g7C9c5/D3Xx5rMgBosg0dadbUPoZD2HNzkadKPol1d2PJAoI9f+Jeh1/v9YfLzpFGVw==
+
+postprocessing@^6.36.6:
   version "6.38.0"
   resolved "https://registry.npmjs.org/postprocessing/-/postprocessing-6.38.0.tgz"
   integrity sha512-tisx8XN/PWTL3uXz2mt8bjlMS1wiOUSCK3ixi4zjwUCFmP8XW8hNhXwrxwd2zf2VmCyCQ3GUaLm7GLnkkBbDsQ==
@@ -2019,15 +2024,15 @@ three-stdlib@^2.35.6:
     fflate "^0.6.9"
     potpack "^1.0.1"
 
+three@0.181.2:
+  version "0.181.2"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.181.2.tgz#d54a8c8b4a409e346cbc60fed58244f1b382d6ea"
+  integrity sha512-k/CjiZ80bYss6Qs7/ex1TBlPD11whT9oKfT8oTGiHa34W4JRd1NiH/Tr1DbHWQ2/vMUypxksLnF2CfmlmM5XFQ==
+
 three@^0.170.0:
   version "0.170.0"
   resolved "https://registry.npmjs.org/three/-/three-0.170.0.tgz"
   integrity sha512-FQK+LEpYc0fBD+J8g6oSEyyNzjp+Q7Ks1C568WWaoMRLW+TkNNWmenWeGgJjV105Gd+p/2ql1ZcjYvNiPZBhuQ==
-
-three@^0.181.0:
-  version "0.181.0"
-  resolved "https://registry.npmjs.org/three/-/three-0.181.0.tgz"
-  integrity sha512-KGf6EOCOQGshXeleKxpxhbowQwAXR2dLlD93egHtZ9Qmk07Saf8sXDR+7wJb53Z1ORZiatZ4WGST9UsVxhHEbg==
 
 tinyglobby@^0.2.15:
   version "0.2.15"
