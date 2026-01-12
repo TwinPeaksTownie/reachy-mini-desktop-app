@@ -199,23 +199,36 @@ export function useAppsStore(isActive, official = true) {
       );
 
       // ========================================
-      // STEP 4: Merge installed apps that aren't in the available list
-      // (e.g., locally installed apps not in official/community store)
+      // STEP 4: Merge installed apps and available apps
+      // Ensuring absolute uniqueness by name
       // ========================================
-      let allApps = [...availableAppsFromSource];
-      const availableAppNames = new Set(allApps.map(app => app.name?.toLowerCase()));
+      const allAppsMap = new Map();
 
-      const localOnlyApps = installedAppsFromDaemon
-        .filter(app => !availableAppNames.has(app.name?.toLowerCase()))
-        .map(app => ({
-          ...app,
-          source_kind: app.source_kind || 'local',
-        }));
+      // First add all available apps from source (official or community)
+      availableAppsFromSource.forEach(app => {
+        if (app.name) {
+          allAppsMap.set(app.name.toLowerCase(), { ...app });
+        }
+      });
 
-      if (localOnlyApps.length > 0) {
-        console.log(`➕ Adding ${localOnlyApps.length} locally installed apps not in store`);
-        allApps = [...allApps, ...localOnlyApps];
-      }
+      // Then add/overwrite with local apps that might not be in the store
+      // Or just ensure we have all installed apps present
+      installedAppsFromDaemon.forEach(app => {
+        const name = app.name?.toLowerCase();
+        if (name) {
+          if (!allAppsMap.has(name)) {
+            // Locally installed only
+            allAppsMap.set(name, {
+              ...app,
+              source_kind: app.source_kind || 'local',
+            });
+          }
+          // Note: Enrichment (Step 5) will handle merging metadata for apps in both lists
+        }
+      });
+
+      const allApps = Array.from(allAppsMap.values());
+      console.log(`➕ Combined into ${allApps.length} unique apps (deduplicated)`);
 
       // ========================================
       // STEP 5: Enrich apps with metadata and update store
